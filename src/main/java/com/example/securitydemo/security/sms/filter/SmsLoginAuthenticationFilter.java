@@ -24,10 +24,10 @@ import static com.example.securitydemo.CommonConsts.VERIFY_CODE;
 public class SmsLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public SmsLoginAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/smsLogin", "POST"));
+        super(new AntPathRequestMatcher("/sms/login", "POST"));
     }
 
-    @Override
+
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String phone = request.getParameter(PHONE);
         String verifyCode = request.getParameter(VERIFY_CODE);
@@ -37,7 +37,6 @@ public class SmsLoginAuthenticationFilter extends AbstractAuthenticationProcessi
         if (StringUtils.isBlank(verifyCode)) {
             verifyCode = "";
         }
-        System.out.println("user phone=" + phone + " verifyCode="+verifyCode);
         log.debug("user phone=" + phone + " verifyCode="+verifyCode);
         SmsLoginAuthenticationToken token = new SmsLoginAuthenticationToken(phone, verifyCode);
         setDetails(request, token);

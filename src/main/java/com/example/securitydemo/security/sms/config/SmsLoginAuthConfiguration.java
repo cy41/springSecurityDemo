@@ -31,7 +31,7 @@ public class SmsLoginAuthConfiguration extends SecurityConfigurerAdapter<Default
     private SmsLoginAuthenticationProvider provider;
 
 
-    @Override
+
     public void configure(HttpSecurity builder) {
         SmsLoginAuthenticationFilter filter = new SmsLoginAuthenticationFilter();
         filter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));

@@ -31,7 +31,7 @@ public class JwtLoginAuthenticationConfiguration extends SecurityConfigurerAdapt
     @Autowired
     private JwtLoginAuthFailureHandler failureHandler;
 
-    @Override
+
     public void configure(HttpSecurity builder) {
         log.debug("start config");
         JwtAuthenticationLoginFilter filter = new JwtAuthenticationLoginFilter();

@@ -1,5 +1,7 @@
 package com.example.securitydemo.security.sms.handler;
 
+import com.example.securitydemo.security.ResultBean;
+import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -13,11 +15,14 @@ import java.io.PrintWriter;
 
 @Component
 public class SmsAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
-    @Override
+
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
+
+        ResultBean resultBean = new ResultBean(-1, "fail");
+        String json = new Gson().toJson(resultBean, ResultBean.class);
         PrintWriter out = response.getWriter();
-        out.write("fail");
+        out.write(json);
         out.flush();
         out.close();
     }

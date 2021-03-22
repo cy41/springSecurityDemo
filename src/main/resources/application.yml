@@ -1,3 +1,4 @@
+#服务器端口
 server:
   port: 9333
 
@@ -29,6 +30,8 @@ spring:
       name: cy41
       password: 123456
 
+  application:
+    name: login-server
 
 mybatis:
   config-location: classpath:mybatis/config.xml

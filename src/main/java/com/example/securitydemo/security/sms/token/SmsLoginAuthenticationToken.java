@@ -26,12 +26,12 @@ public class SmsLoginAuthenticationToken extends AbstractAuthenticationToken {
         setAuthenticated(true);
     }
 
-    @Override
+
     public Object getCredentials() {
         return verifyCode;
     }
 
-    @Override
+
     public Object getPrincipal() {
         return phone;
     }

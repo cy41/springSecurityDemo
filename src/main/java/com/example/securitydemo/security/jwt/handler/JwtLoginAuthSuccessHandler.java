@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 public class JwtLoginAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     //TODO token
-    @Override
+
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         String generateToken = "123412341234";

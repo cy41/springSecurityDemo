@@ -27,7 +27,7 @@ public class JwtLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHa
         private String message;
     }
 
-    @Override
+
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         log.error("用户登录失败, {}",e.getMessage());

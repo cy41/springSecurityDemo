@@ -28,7 +28,7 @@ public class JwtAuthenticationLoginFilter extends AbstractAuthenticationProcessi
         super(new AntPathRequestMatcher("/jwtLogin", "POST"));
     }
 
-    @Override
+
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
         log.info(body);

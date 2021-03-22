@@ -53,40 +53,40 @@ public class MyUserDetails implements UserDetails {
 
     private List<Role> roleList;
 
-    @Override
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roleList.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
     }
 
-    @Override
+
     public String getPassword() {
         return pwd;
     }
 
-    @Override
+
     public String getUsername() {
         return name;
     }
 
     //账户过期否
-    @Override
+
     public boolean isAccountNonExpired() {
         return true;
     }
 
     //用户锁定否
-    @Override
+
     public boolean isAccountNonLocked() {
         return true;
     }
 
     //密码过期否
-    @Override
+
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @Override
+
     public boolean isEnabled() {
         return true;
     }

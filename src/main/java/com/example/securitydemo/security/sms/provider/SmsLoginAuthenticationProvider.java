@@ -2,6 +2,7 @@ package com.example.securitydemo.security.sms.provider;
 
 import com.example.securitydemo.security.sms.service.SmsLoginUserDetailsService;
 import com.example.securitydemo.security.sms.token.SmsLoginAuthenticationToken;
+import com.example.securitydemo.utils.PhoneSmsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,8 +27,11 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
     @Qualifier("smsLoginUserDetailsService")
     private SmsLoginUserDetailsService userDetailsService;
 
+    @Autowired
+    private PhoneSmsService phoneSmsService;
+
     //TODO verify code
-    @Override
+
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         Assert.isInstanceOf(SmsLoginAuthenticationToken.class, authentication, "not mapping type of token");
 
@@ -45,14 +49,14 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
         }
 
         //verify code error
-        if (!verifyCode.equals("123")) {
+        if (!phoneSmsService.verifyCode(phone, verifyCode)) {
             log.debug("verify code error");
             throw new AuthenticationCredentialsNotFoundException("verify code error");
         }
         return new SmsLoginAuthenticationToken(userDetails.getAuthorities(), phone, verifyCode);
     }
 
-    @Override
+
     public boolean supports(Class<?> authentication) {
         boolean res = authentication.isAssignableFrom(SmsLoginAuthenticationToken.class);
         log.debug("support" + res);
