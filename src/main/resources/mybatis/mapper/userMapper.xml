@@ -34,4 +34,10 @@
         WHERE u.phone = #{phone}
     </select>
 
+    <select id="queryIdByPhone" parameterType="String" resultType="Long">
+        SELECT id
+        FROM user
+        WHERE phone = #{phone}
+    </select>
+
 </mapper>

@@ -13,4 +13,6 @@ public interface UserDao {
     MyUserDetails queryUserDetailsById(Long id);
 
     MyUserDetails queryUserDetailsByPhone(String phone);
+
+    Long queryIdByPhone(String phone);
 }

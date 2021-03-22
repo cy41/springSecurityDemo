@@ -28,4 +28,8 @@ public class UserService {
         return userDao.queryUserDetailsByPhone(phone);
     }
 
+    public Long queryUidByPhone(String phone) {
+        return userDao.queryIdByPhone(phone);
+    }
+
 }

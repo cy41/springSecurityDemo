@@ -1,6 +1,5 @@
 package com.example.securitydemo.utils;
 
-import com.example.securitydemo.security.entitys.MyUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,17 +13,26 @@ public class JwtUtils {
     private static final String UID = "uid";
     private String key = "23oisdufhrl3rj;zxc/';3";
 
+    private static JwtUtils instance = new JwtUtils();
+
+    private JwtUtils() {
+
+    }
+
+    public static JwtUtils getInstance() {
+        return instance;
+    }
+
     /**
      * create token
      *
-     * @param userInfo
+     * @param uid user id
      * @param expireMinutes 有效时间
      * @return token
      */
-    public String generateToken(MyUserDetails userInfo, int expireMinutes) {
+    public String generateToken(Long uid, int expireMinutes) {
         return Jwts.builder()
-                .claim(ID, userInfo.getId())
-                .claim(UID, userInfo.getName())
+                .claim(UID, uid)
                 .setExpiration(DateTime.now().plusMillis(expireMinutes).toDate())
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
