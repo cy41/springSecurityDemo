@@ -15,9 +15,9 @@ public class SmsLoginUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
-
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        UserDetails userDetails = userService.queryUserDetailsByPhone(id);
+    @Override
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        UserDetails userDetails = userService.queryUserDetailsByPhone(phone);
         if (userDetails == null) {
             log.debug("no such user");
             throw new UsernameNotFoundException("no such user");

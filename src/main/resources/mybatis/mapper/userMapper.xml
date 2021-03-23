@@ -40,4 +40,13 @@
         WHERE phone = #{phone}
     </select>
 
+    <insert id="insertUser"
+            parameterType="user"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO user(pwd, phone)
+        VALUES (#{pwd}, #{phone})
+    </insert>
+
+
 </mapper>

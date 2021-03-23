@@ -1,9 +1,8 @@
-package com.example.securitydemo.security.jwt.filter;
+package com.example.securitydemo.security.pwd.filter;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,28 +17,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static com.example.securitydemo.CommonConsts.PWD;
-import static com.example.securitydemo.CommonConsts.USER_NAME;
+import static com.example.securitydemo.CommonConsts.*;
 
 @Slf4j
-public class JwtAuthenticationLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class PwdAuthenticationLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    public JwtAuthenticationLoginFilter() {
-        super(new AntPathRequestMatcher("/jwtLogin", "POST"));
+    public PwdAuthenticationLoginFilter() {
+        super(new AntPathRequestMatcher("/pwd/login", "POST"));
     }
 
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
         log.info(body);
-        String name = "";
+        String phone = "";
         String pwd = "";
         if (StringUtils.hasText(body)) {
             JsonObject jsonObject = new JsonParser().parse(body).getAsJsonObject();
-            name = jsonObject.get(USER_NAME).getAsString().trim();
+            phone = jsonObject.get(PHONE).getAsString().trim();
             pwd = jsonObject.get(PWD).getAsString().trim();
         }
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(name, pwd);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(phone, pwd);
         log.debug("token is " + token.toString());
         return getAuthenticationManager().authenticate(token);
     }

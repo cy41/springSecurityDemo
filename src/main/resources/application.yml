@@ -23,7 +23,7 @@ spring:
     host: 127.0.0.1
   cache:
     type: redis
-    cache-names: redisCache
+    cache-names: redisCache, phoneUid
 
   security:
     user:

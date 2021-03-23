@@ -1,4 +1,4 @@
-package com.example.securitydemo.security.jwt.handler;
+package com.example.securitydemo.security.pwd.handler;
 
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 
 @Component
 @Slf4j
-public class JwtLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler{
+public class PwdLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 
     @Data
     @AllArgsConstructor

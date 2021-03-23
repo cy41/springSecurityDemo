@@ -1,7 +1,7 @@
 package com.example.securitydemo.security.entitys;
 
 import com.example.securitydemo.mybatis.entitys.Role;
-import com.example.securitydemo.mybatis.entitys.User;
+import lombok.AllArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +18,13 @@ public class MyUserDetails implements UserDetails {
     private String name;
     private String pwd;
     private String phone;
+
+    public MyUserDetails(Long id, String name, String pwd, String phone) {
+        this.id = id;
+        this.name = name;
+        this.pwd = pwd;
+        this.phone = phone;
+    }
 
     public Long getId() {
         return id;

@@ -1,6 +1,6 @@
 package com.example.securitydemo.security.config;
 
-import com.example.securitydemo.security.jwt.config.JwtLoginAuthenticationConfiguration;
+import com.example.securitydemo.security.pwd.config.PwdLoginAuthenticationConfiguration;
 import com.example.securitydemo.security.sms.config.SmsLoginAuthConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ public class MyWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private SmsLoginAuthConfiguration smsLoginAuthConfiguration;
 
     @Autowired
-    private JwtLoginAuthenticationConfiguration jwtLoginAuthenticationConfiguration;
+    private PwdLoginAuthenticationConfiguration pwdLoginAuthenticationConfiguration;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,15 +41,13 @@ public class MyWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .disable()
-                .apply(smsLoginAuthConfiguration)
-                .and()
-                .apply(jwtLoginAuthenticationConfiguration)
-                .and()
+                .apply(smsLoginAuthConfiguration).and()
+                .apply(pwdLoginAuthenticationConfiguration).and()
                 // 设置URL的授权
                 .authorizeRequests()
                 // 这里需要将登录页面放行
-                .antMatchers("/login","/sms/*","/failure","/jwtLogin", "/insertUser", "/testPwd")
-                .permitAll()
+                .antMatchers("/login","/sms/*","/failure", "/insertUser", "/testPwd").permitAll()
+                .antMatchers("/pwd/*").permitAll()
                 // anyRequest() 所有请求   authenticated() 必须被认证
                 .anyRequest().authenticated()
                 .and()

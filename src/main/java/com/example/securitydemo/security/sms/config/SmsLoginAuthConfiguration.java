@@ -4,12 +4,9 @@ import com.example.securitydemo.security.sms.filter.SmsLoginAuthenticationFilter
 import com.example.securitydemo.security.sms.provider.SmsLoginAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -19,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SmsLoginAuthConfiguration extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    @Qualifier("smsAuthenticationSuccessHandler")
+    @Qualifier("authLoginSuccessHandler")
     @Autowired
     private AuthenticationSuccessHandler successHandler;
 

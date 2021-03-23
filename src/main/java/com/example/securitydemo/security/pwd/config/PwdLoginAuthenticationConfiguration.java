@@ -1,10 +1,11 @@
-package com.example.securitydemo.security.jwt.config;
+package com.example.securitydemo.security.pwd.config;
 
-import com.example.securitydemo.security.jwt.filter.JwtAuthenticationLoginFilter;
-import com.example.securitydemo.security.jwt.handler.JwtLoginAuthFailureHandler;
-import com.example.securitydemo.security.jwt.handler.JwtLoginAuthSuccessHandler;
-import com.example.securitydemo.security.jwt.service.JwtLoginUserDetailsService;
+import com.example.securitydemo.security.pwd.filter.PwdAuthenticationLoginFilter;
+import com.example.securitydemo.security.pwd.handler.PwdLoginAuthFailureHandler;
+import com.example.securitydemo.security.pwd.service.PwdLoginUserDetailsService;
 import com.example.securitydemo.security.sms.filter.SmsLoginAuthenticationFilter;
+import com.example.securitydemo.security.sms.handler.AuthLoginSuccessHandler;
+import com.example.securitydemo.security.sms.service.SmsLoginUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,28 +14,29 @@ import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class JwtLoginAuthenticationConfiguration extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class PwdLoginAuthenticationConfiguration extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JwtLoginUserDetailsService userDetailsService;
+    private SmsLoginUserDetailsService userDetailsService;
 
     @Autowired
-    private JwtLoginAuthSuccessHandler successHandler;
+    private AuthLoginSuccessHandler successHandler;
 
     @Autowired
-    private JwtLoginAuthFailureHandler failureHandler;
+    private PwdLoginAuthFailureHandler failureHandler;
 
 
     public void configure(HttpSecurity builder) {
         log.debug("start config");
-        JwtAuthenticationLoginFilter filter = new JwtAuthenticationLoginFilter();
+        PwdAuthenticationLoginFilter filter = new PwdAuthenticationLoginFilter();
         filter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);
@@ -43,7 +45,7 @@ public class JwtLoginAuthenticationConfiguration extends SecurityConfigurerAdapt
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userDetailsService);
 
-        builder.addFilterAt(filter, SmsLoginAuthenticationFilter.class);
+        builder.addFilterAt(filter, UsernamePasswordAuthenticationFilter.class);
         builder.authenticationProvider(provider);
     }
 }

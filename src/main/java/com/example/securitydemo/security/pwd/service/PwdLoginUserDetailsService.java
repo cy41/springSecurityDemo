@@ -1,4 +1,4 @@
-package com.example.securitydemo.security.jwt.service;
+package com.example.securitydemo.security.pwd.service;
 
 import com.example.securitydemo.mybatis.service.UserService;
 import com.example.securitydemo.security.entitys.MyUserDetails;
@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service("jwtLoginUserDetailsService")
-public class JwtLoginUserDetailsService implements UserDetailsService {
+@Service("pwdLoginUserDetailsService")
+public class PwdLoginUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserService userService;
@@ -23,12 +23,4 @@ public class JwtLoginUserDetailsService implements UserDetailsService {
         return userDetails;
     }
 
-
-    public String getToken(MyUserDetails userDetails) {
-        return "asdfasdfasdf";
-    }
-
-    public MyUserDetails getUserFromToken(String token) {
-        return null;
-    }
 }

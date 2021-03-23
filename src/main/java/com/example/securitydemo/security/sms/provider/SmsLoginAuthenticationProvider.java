@@ -30,8 +30,14 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private PhoneSmsService phoneSmsService;
 
-    //TODO verify code
-
+    /**
+     * 先验证
+     * 再注册
+     *
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         Assert.isInstanceOf(SmsLoginAuthenticationToken.class, authentication, "not mapping type of token");
 
@@ -41,18 +47,21 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
         String verifyCode = (String) authenticationToken.getCredentials();
 
         UserDetails userDetails;
-        try {
-            userDetails = userDetailsService.loadUserByUsername(phone);
-        } catch (UsernameNotFoundException exception) {
-            log.debug(exception.getMessage());
-            throw new InternalAuthenticationServiceException("cannot get user info");
-        }
 
         //verify code error
         if (!phoneSmsService.verifyCode(phone, verifyCode)) {
             log.debug("verify code error");
             throw new AuthenticationCredentialsNotFoundException("verify code error");
         }
+
+        try {
+            userDetails = userDetailsService.loadUserByUsername(phone);
+        } catch (UsernameNotFoundException exception) {
+            // 不会找不到，因为登陆与注册不区分
+            log.debug(exception.getMessage());
+            throw new InternalAuthenticationServiceException("cannot get user info");
+        }
+
         return new SmsLoginAuthenticationToken(userDetails.getAuthorities(), phone, verifyCode);
     }
 
