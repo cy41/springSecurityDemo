@@ -1,5 +1,6 @@
 package com.example.securitydemo.security.config;
 
+import com.example.securitydemo.security.jwt.JwtAuthConfiguration;
 import com.example.securitydemo.security.pwd.config.PwdLoginAuthenticationConfiguration;
 import com.example.securitydemo.security.sms.config.SmsLoginAuthConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class MyWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private PwdLoginAuthenticationConfiguration pwdLoginAuthenticationConfiguration;
 
+    @Autowired
+    private JwtAuthConfiguration jwtAuthConfiguration;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -31,7 +35,7 @@ public class MyWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     // 注入authenticationManager对象
     @Bean
-
+    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -43,6 +47,7 @@ public class MyWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
                 .apply(smsLoginAuthConfiguration).and()
                 .apply(pwdLoginAuthenticationConfiguration).and()
+                .apply(jwtAuthConfiguration).and()
                 // 设置URL的授权
                 .authorizeRequests()
                 // 这里需要将登录页面放行

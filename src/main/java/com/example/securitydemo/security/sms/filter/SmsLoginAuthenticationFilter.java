@@ -1,20 +1,21 @@
 package com.example.securitydemo.security.sms.filter;
 
 import com.example.securitydemo.security.sms.token.SmsLoginAuthenticationToken;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.platform.commons.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static com.example.securitydemo.CommonConsts.PHONE;
 import static com.example.securitydemo.CommonConsts.VERIFY_CODE;
@@ -29,14 +30,17 @@ public class SmsLoginAuthenticationFilter extends AbstractAuthenticationProcessi
 
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        String phone = request.getParameter(PHONE);
-        String verifyCode = request.getParameter(VERIFY_CODE);
-        if (StringUtils.isBlank(phone)) {
-            phone = "";
+        String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
+        log.info("body {}", body);
+        String phone = "";
+        String verifyCode = "";
+
+        if (StringUtils.hasText(body)) {
+            JsonObject jsonObject = new JsonParser().parse(body).getAsJsonObject();
+            phone = jsonObject.get(PHONE).getAsString();
+            verifyCode = jsonObject.get(verifyCode).getAsString();
         }
-        if (StringUtils.isBlank(verifyCode)) {
-            verifyCode = "";
-        }
+
         log.debug("user phone=" + phone + " verifyCode="+verifyCode);
         SmsLoginAuthenticationToken token = new SmsLoginAuthenticationToken(phone, verifyCode);
         setDetails(request, token);

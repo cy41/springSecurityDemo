@@ -1,5 +1,6 @@
 package com.example.securitydemo.security.pwd.handler;
 
+import com.example.securitydemo.security.exception.TokenAuthException;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,6 +45,8 @@ public class PwdLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHa
             respBean.setMessage("账户被禁用，请联系管理员!");
         } else if (e instanceof BadCredentialsException) {
             respBean.setMessage("用户名或者密码输入错误，请重新输入!");
+        } else if (e instanceof TokenAuthException) {
+            respBean.setMessage("no jwt-token header");
         }
         String json = new Gson().toJson(respBean,ExceptionResult.class);
         out.write(json);

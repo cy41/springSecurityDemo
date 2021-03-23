@@ -31,6 +31,12 @@ public class UserService {
         }
     }
 
+    @Cacheable(value = "userCache", key = "'user_id_' + id")
+    @Transactional
+    public UserDetails queryUserDetailsById(Long id) {
+        return userDao.queryUserDetailsById(id);
+    }
+
 
     @Transactional
     @CachePut(value = "redisCache", key = "'user_' + #result.id")

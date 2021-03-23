@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.joda.time.DateTime;
+import org.springframework.cache.annotation.CachePut;
 
 import java.util.Date;
 
@@ -30,6 +31,7 @@ public class JwtUtils {
      * @param expireMinutes 有效时间
      * @return token
      */
+    @CachePut(value = "jwtCache", key = "'jwt_' + #result")
     public String generateToken(Long uid, int expireMinutes) {
         return Jwts.builder()
                 .claim(UID, uid)
@@ -41,11 +43,19 @@ public class JwtUtils {
 
     // decode token
     public String parseToken(String jwt) {
-        return Jwts.parser()
-                .setSigningKey(key)
-                .parseClaimsJwt(jwt)
-                .getBody()
-                .getSubject();
+        Claims claims = getClaimsFromToken(jwt);
+        if (claims == null) {
+            return "";
+        }
+        return claims.getSubject();
+    }
+
+    public Long parseUidFromToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        if (claims == null) {
+            return null;
+        }
+        return Long.valueOf(claims.get("uid").toString());
     }
 
     // verify token
