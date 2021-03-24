@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Component
-public class TokenAuthSuccessHeader extends SimpleUrlAuthenticationSuccessHandler {
+public class TokenAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     //todo success progress
     @Override

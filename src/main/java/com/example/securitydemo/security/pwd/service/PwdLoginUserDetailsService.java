@@ -14,7 +14,13 @@ public class PwdLoginUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
-
+    /**
+     *
+     * @param id 通过uid查找user
+     * @return userDetails
+     * @throws UsernameNotFoundException
+     */
+    @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         UserDetails userDetails = userService.queryUserDetailsById(id);
         if (userDetails == null) {

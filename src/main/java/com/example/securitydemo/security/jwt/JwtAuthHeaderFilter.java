@@ -1,75 +1,47 @@
 package com.example.securitydemo.security.jwt;
 
 import com.example.securitydemo.mybatis.service.UserService;
-import com.example.securitydemo.security.exception.TokenAuthException;
-import com.example.securitydemo.security.pwd.handler.PwdLoginAuthFailureHandler;
-import com.example.securitydemo.utils.JwtUtils;
-import com.example.securitydemo.utils.RedisService;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.util.StreamUtils;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static com.example.securitydemo.CommonConsts.JWT_TOKEN_HEADER;
+import static com.example.securitydemo.CommonConsts.UID;
 
 @Slf4j
-public class JwtAuthHeaderFilter extends OncePerRequestFilter {
+public class JwtAuthHeaderFilter extends AbstractAuthenticationProcessingFilter {
 
-    private RequestHeaderRequestMatcher tokenMather = new RequestHeaderRequestMatcher("jwt-token");
-
-    private AuthenticationManager authenticationManager;
-
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
+    public JwtAuthHeaderFilter() {
+        super(new RequestHeaderRequestMatcher(JWT_TOKEN_HEADER));
     }
 
-    @Autowired
-    private PwdLoginAuthFailureHandler failureHandler;
-
-    @Autowired
-    private TokenAuthSuccessHeader successHeader;
-
-    @Autowired
-    private RedisService redisService;
-
-    @Autowired
-    private UserService userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (!tokenMather.matches(request)) {
-            log.debug("no jwt-token header, try doFilter");
-            filterChain.doFilter(request, response);
-            return ;
-        }
-        String token = request.getHeader(JWT_TOKEN_HEADER);
-        if (StringUtils.isBlank(token)) {
-            SecurityContextHolder.clearContext();
-            failureHandler.onAuthenticationFailure(request, response, new TokenAuthException("no jwt-token header"));
-            return ;
-        } else {
-            Long uid = JwtUtils.getInstance().parseUidFromToken(token);
-            if (redisService.get("jwt_" + token) == token || userService.queryUserDetailsById(uid) != null) {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        String headerToken = request.getHeader(JWT_TOKEN_HEADER);
 
-                JwtAuthToken jwtAuthToken = new JwtAuthToken(uid, token);
-                Authentication authentication = authenticationManager.authenticate(jwtAuthToken);
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                successHeader.onAuthenticationSuccess(request, response, jwtAuthToken);
-            }
+        String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
+        log.info("body {}", body);
+        JsonObject json = new JsonParser().parse(body).getAsJsonObject();
+        String uid = json.get(UID).getAsString();
+        if (uid == null) {
+            uid = "";
         }
 
+        JwtAuthToken authentication = new JwtAuthToken(uid, headerToken);
+        return getAuthenticationManager().authenticate(authentication);
 
-        filterChain.doFilter(request, response);
     }
 }

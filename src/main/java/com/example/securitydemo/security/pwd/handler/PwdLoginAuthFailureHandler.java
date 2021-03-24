@@ -36,15 +36,15 @@ public class PwdLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHa
         ExceptionResult respBean = new ExceptionResult(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         if (e instanceof LockedException) {
-            respBean.setMessage("账户被锁定，请联系管理员!");
+            respBean.setMessage("account locked");
         } else if (e instanceof CredentialsExpiredException) {
-            respBean.setMessage("密码过期，请联系管理员!");
+            respBean.setMessage("pwd expired");
         } else if (e instanceof AccountExpiredException) {
-            respBean.setMessage("账户过期，请联系管理员!");
+            respBean.setMessage("account expired");
         } else if (e instanceof DisabledException) {
-            respBean.setMessage("账户被禁用，请联系管理员!");
+            respBean.setMessage("account Forbided");
         } else if (e instanceof BadCredentialsException) {
-            respBean.setMessage("用户名或者密码输入错误，请重新输入!");
+            respBean.setMessage("account or pwd error");
         } else if (e instanceof TokenAuthException) {
             respBean.setMessage("no jwt-token header");
         }

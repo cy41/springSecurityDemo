@@ -11,18 +11,18 @@ public class SmsLoginAuthenticationToken extends AbstractAuthenticationToken {
     private final Object phone;
     private Object verifyCode;
 
-    public SmsLoginAuthenticationToken(Object principal, Object credentials) {
+    public SmsLoginAuthenticationToken(Object phone, Object verifyCode) {
         super(null);
-        this.phone = principal;
-        this.verifyCode = credentials;
+        this.phone = phone;
+        this.verifyCode = verifyCode;
         //初始化完成，但是还未认证
         setAuthenticated(false);
     }
 
-    public SmsLoginAuthenticationToken(Collection<? extends GrantedAuthority> authorities, Object principal, Object credentials) {
+    public SmsLoginAuthenticationToken(Collection<? extends GrantedAuthority> authorities, Object phone, Object verifyCode) {
         super(authorities);
-        this.phone = principal;
-        this.verifyCode = credentials;
+        this.phone = phone;
+        this.verifyCode = verifyCode;
         setAuthenticated(true);
     }
 

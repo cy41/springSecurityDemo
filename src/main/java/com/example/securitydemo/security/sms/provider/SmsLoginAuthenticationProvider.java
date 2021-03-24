@@ -39,6 +39,7 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
      * @throws AuthenticationException
      */
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        log.debug("start authenticate");
         Assert.isInstanceOf(SmsLoginAuthenticationToken.class, authentication, "not mapping type of token");
 
         SmsLoginAuthenticationToken authenticationToken = (SmsLoginAuthenticationToken) authentication;
@@ -68,7 +69,7 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
 
     public boolean supports(Class<?> authentication) {
         boolean res = authentication.isAssignableFrom(SmsLoginAuthenticationToken.class);
-        log.debug("support" + res);
+        log.debug("support " + res);
         return res;
     }
 }

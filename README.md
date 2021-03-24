@@ -56,3 +56,7 @@ response:
 
 ```
 
+securityConfig -> authManager
+filter -> authManager
+securityConfig -> filterConfig
+filterConfig -> filter

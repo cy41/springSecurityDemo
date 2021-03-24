@@ -2,8 +2,6 @@ package com.example.securitydemo.security.pwd.config;
 
 import com.example.securitydemo.security.pwd.filter.PwdAuthenticationLoginFilter;
 import com.example.securitydemo.security.pwd.handler.PwdLoginAuthFailureHandler;
-import com.example.securitydemo.security.pwd.service.PwdLoginUserDetailsService;
-import com.example.securitydemo.security.sms.filter.SmsLoginAuthenticationFilter;
 import com.example.securitydemo.security.sms.handler.AuthLoginSuccessHandler;
 import com.example.securitydemo.security.sms.service.SmsLoginUserDetailsService;
 import lombok.extern.slf4j.Slf4j;

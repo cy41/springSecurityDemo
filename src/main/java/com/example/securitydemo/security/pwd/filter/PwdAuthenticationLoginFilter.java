@@ -28,8 +28,9 @@ public class PwdAuthenticationLoginFilter extends AbstractAuthenticationProcessi
 
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        log.debug("attempt start");
         String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
-        log.info(body);
+        log.info("body {}", body);
         String phone = "";
         String pwd = "";
         if (StringUtils.hasText(body)) {
