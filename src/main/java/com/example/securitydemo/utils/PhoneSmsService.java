@@ -11,9 +11,11 @@ public class PhoneSmsService {
 
     private static final int EXPIRED_TIME = 60;
 
+    private static final String SUFFIX = "verify_phone_";
+
 
     public String getVerifyCode(String phone) {
-        return (String) service.get(phone);
+        return (String) service.get(SUFFIX + phone);
     }
 
     public boolean verifyCode(String phone, String code) {
@@ -25,7 +27,7 @@ public class PhoneSmsService {
 
     public String setVerifyCode(String phone) {
         String code = randomCode();
-        service.set(phone, code, EXPIRED_TIME);
+        service.set(SUFFIX + phone, code, EXPIRED_TIME);
         return code;
     }
 

@@ -1,28 +1,17 @@
 package com.example.securitydemo.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.joda.time.DateTime;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service
 public class JwtUtils {
 
-    private static final String ID = "id";
     private static final String UID = "uid";
-    private String key = "23oisdufhrl3rj;zxc/';3";
-
-    private static JwtUtils instance = new JwtUtils();
-
-    private JwtUtils() {
-
-    }
-
-    public static JwtUtils getInstance() {
-        return instance;
-    }
+    private static final String key = "cycy1235456";
 
     /**
      * create token
@@ -31,7 +20,7 @@ public class JwtUtils {
      * @param expireMinutes 有效时间
      * @return token
      */
-    @CachePut(value = "jwtCache", key = "'jwt_' + #result")
+    @CachePut(value = "jwtCache", key = "'jwt_uid_' + #uid")
     public String generateToken(Long uid, int expireMinutes) {
         return Jwts.builder()
                 .claim(UID, uid)
@@ -84,11 +73,12 @@ public class JwtUtils {
         try {
             claims = Jwts.parser()
                     .setSigningKey(key)
-                    .parseClaimsJwt(token)
+                    .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
             return null;
         }
+        System.out.println("claims " + claims);
 
         return claims;
     }

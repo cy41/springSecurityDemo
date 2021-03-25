@@ -44,9 +44,10 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
 
         SmsLoginAuthenticationToken authenticationToken = (SmsLoginAuthenticationToken) authentication;
 
-        String phone = (String) authenticationToken.getPrincipal();
-        String verifyCode = (String) authenticationToken.getCredentials();
+        String phone = authenticationToken.getPrincipal().toString();
+        String verifyCode = authenticationToken.getCredentials().toString();
 
+        log.debug("phone=" + phone + ", code=" + verifyCode);
         UserDetails userDetails;
 
         //verify code error

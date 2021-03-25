@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtAuthConfiguration extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    @Autowired
+    //@Autowired
     private JwtAuthProvider provider;
 
     @Autowired
@@ -23,6 +23,8 @@ public class JwtAuthConfiguration extends SecurityConfigurerAdapter<DefaultSecur
 
     @Override
     public void configure(HttpSecurity builder) {
+        provider = new JwtAuthProvider();
+        postProcess(provider);
         JwtAuthHeaderFilter filter = new JwtAuthHeaderFilter();
         filter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
         filter.setAuthenticationSuccessHandler(successHandler);

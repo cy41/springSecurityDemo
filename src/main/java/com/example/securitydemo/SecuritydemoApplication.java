@@ -24,8 +24,10 @@ public class SecuritydemoApplication {
 
     @PostConstruct
     private void initRedisTemplate() {
-        RedisSerializer redisSerializer = redisTemplate.getStringSerializer();
-        redisTemplate.setHashKeySerializer(redisSerializer);
-        redisTemplate.setKeySerializer(redisSerializer);
+        RedisSerializer redisStringSerializer = redisTemplate.getStringSerializer();
+        redisTemplate.setHashKeySerializer(redisStringSerializer);
+        redisTemplate.setKeySerializer(redisStringSerializer);
+        redisTemplate.setValueSerializer(redisStringSerializer);
+        redisTemplate.setHashValueSerializer(redisStringSerializer);
     }
 }

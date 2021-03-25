@@ -15,5 +15,9 @@ public class TestController {
         return passwordUtils.encode(pwd);
     }
 
+    @RequestMapping("/jwt/auth")
+    public String testJwtAuth() {
+        return "hello jwt";
+    }
 
 }
