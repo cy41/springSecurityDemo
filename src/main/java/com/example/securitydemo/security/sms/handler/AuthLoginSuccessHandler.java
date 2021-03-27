@@ -27,10 +27,10 @@ public class AuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
     @Autowired
     private JwtUtils jwtUtils;
 
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         Writer writer = response.getWriter();
 
-        Long uid = userService.queryUidByPhone(authentication.getPrincipal().toString());
+        int uid = userService.queryUidByPhone(authentication.getPrincipal().toString());
         String token = jwtUtils.generateToken(uid, 24 * 60 * 60);
 
         Result result = new Result(200, "success", token);

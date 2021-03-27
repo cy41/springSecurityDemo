@@ -9,7 +9,7 @@ import org.apache.ibatis.type.Alias;
 @Data
 @NoArgsConstructor
 public class User {
-    private Long id;
+    private int id;
     private String name;
     private String pwd;
     private String phone;

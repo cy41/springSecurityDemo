@@ -10,11 +10,11 @@ import org.apache.ibatis.type.Alias;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRole {
-    private Long id;
-    private Long uid;
-    private Long rid;
+    private int id;
+    private int uid;
+    private int rid;
 
-    public UserRole(Long uid, Long rid) {
+    public UserRole(int uid, int rid) {
         this.uid = uid;
         this.rid = rid;
     }

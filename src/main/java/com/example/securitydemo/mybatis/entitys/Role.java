@@ -6,6 +6,6 @@ import org.apache.ibatis.type.Alias;
 @Alias("role")
 @Data
 public class Role {
-    private Long id;
+    private int id;
     private String roleName;
 }

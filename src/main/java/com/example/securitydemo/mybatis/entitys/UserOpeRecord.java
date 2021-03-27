@@ -8,8 +8,8 @@ import java.util.Date;
 @Alias("user_ope_record")
 @Data
 public class UserOpeRecord {
-    private Long id;
-    private Long userId;
+    private int id;
+    private int userId;
     private String action;
     private Date time;
 }

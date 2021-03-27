@@ -4,6 +4,7 @@ import com.example.securitydemo.mybatis.dao.UserDao;
 import com.example.securitydemo.mybatis.dao.UserRoleDao;
 import com.example.securitydemo.mybatis.entitys.User;
 import com.example.securitydemo.mybatis.entitys.UserRole;
+import com.example.securitydemo.security.entitys.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,16 +25,16 @@ public class UserService {
     @Transactional
     public UserDetails queryUserDetailsById(String id) {
         try {
-            Long uId = Long.valueOf(id);
+            int uId = Integer.parseInt(id);
             return userDao.queryUserDetailsById(uId);
         } catch (NumberFormatException exception) {
             return null;
         }
     }
 
-    @Cacheable(value = "userCache", key = "'user_id_' + id")
+    @Cacheable(value = "userCache", key = "'user_id_' + #id")
     @Transactional
-    public UserDetails queryUserDetailsById(Long id) {
+    public MyUserDetails queryUserDetailsById(int id) {
         return userDao.queryUserDetailsById(id);
     }
 
@@ -42,7 +43,7 @@ public class UserService {
     @CachePut(value = "redisCache", key = "'user_' + #result.id")
     public User insertUser(User user) {
         userDao.insertUser(user);
-        userRoleDao.insert(new UserRole(user.getId(), 1L));
+        userRoleDao.insert(new UserRole(user.getId(), 1));
         return user;
     }
 
@@ -61,7 +62,7 @@ public class UserService {
 
     @Transactional
     @Cacheable(value = "phoneUid", key = "'user_phone_' + #phone")
-    public Long queryUidByPhone(String phone) {
+    public int queryUidByPhone(String phone) {
         return userDao.queryIdByPhone(phone);
     }
 

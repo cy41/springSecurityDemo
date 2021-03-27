@@ -21,7 +21,7 @@ public class JwtUtils {
      * @return token
      */
     @CachePut(value = "jwtCache", key = "'jwt_uid_' + #uid")
-    public String generateToken(Long uid, int expireMinutes) {
+    public String generateToken(int uid, int expireMinutes) {
         return Jwts.builder()
                 .claim(UID, uid)
                 .setExpiration(DateTime.now().plusMillis(expireMinutes).toDate())
@@ -39,12 +39,12 @@ public class JwtUtils {
         return claims.getSubject();
     }
 
-    public Long parseUidFromToken(String token) {
+    public int parseUidFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
         if (claims == null) {
-            return null;
+            return -1;
         }
-        return Long.valueOf(claims.get("uid").toString());
+        return Integer.parseInt(claims.get("uid").toString());
     }
 
     // verify token

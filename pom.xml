@@ -35,6 +35,13 @@
             <version>2.1.4</version>
         </dependency>
 
+        <!--获取yml中的配置信息-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!--mysql-->
         <dependency>
             <groupId>mysql</groupId>

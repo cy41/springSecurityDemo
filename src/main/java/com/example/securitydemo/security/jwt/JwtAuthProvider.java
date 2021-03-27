@@ -37,11 +37,11 @@ public class JwtAuthProvider implements AuthenticationProvider {
         }
 
         log.debug("jwtutils is null? {}", jwtUtils == null);
-        Long uidFromToken = jwtUtils.parseUidFromToken(headerToken);
+        int uidFromToken = jwtUtils.parseUidFromToken(headerToken);
         log.debug("uidFromToken {}", uidFromToken);
 
         log.debug("token in redis is {}", redisService.get("jwtCache::jwt_uid_" + headerUid));
-        if (StringUtils.safeToString(uidFromToken).equals(headerUid) && redisService.get("jwtCache::jwt_uid_" + headerUid) == headerToken) {
+        if (StringUtils.safeToString(uidFromToken).equals(headerUid) && headerToken.equals(redisService.get("jwtCache::jwt_uid_" + headerUid).toString())) {
             UserDetails userDetails = userService.queryUserDetailsById(uidFromToken);
             if (userDetails == null) {
                 throw new UsernameNotFoundException("no such user");

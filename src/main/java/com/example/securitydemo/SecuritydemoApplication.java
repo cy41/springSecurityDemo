@@ -11,7 +11,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
-@EnableCaching
 @MapperScan("com.example.securitydemo.mybatis.dao")
 public class SecuritydemoApplication {
 
@@ -19,7 +18,7 @@ public class SecuritydemoApplication {
         SpringApplication.run(SecuritydemoApplication.class, args);
     }
 
-    @Autowired
+    /*@Autowired
     private RedisTemplate redisTemplate;
 
     @PostConstruct
@@ -29,5 +28,5 @@ public class SecuritydemoApplication {
         redisTemplate.setKeySerializer(redisStringSerializer);
         redisTemplate.setValueSerializer(redisStringSerializer);
         redisTemplate.setHashValueSerializer(redisStringSerializer);
-    }
+    }*/
 }

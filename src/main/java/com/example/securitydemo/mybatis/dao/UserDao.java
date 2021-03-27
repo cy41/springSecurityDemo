@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface UserDao {
-    User queryUserById(Long id);
+    User queryUserById(int id);
 
-    MyUserDetails queryUserDetailsById(Long id);
+    MyUserDetails queryUserDetailsById(int id);
 
     MyUserDetails queryUserDetailsByPhone(String phone);
 
-    Long queryIdByPhone(String phone);
+    int queryIdByPhone(String phone);
 
     int insertUser(User user);
 }

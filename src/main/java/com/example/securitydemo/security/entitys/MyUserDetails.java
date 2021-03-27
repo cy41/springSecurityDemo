@@ -14,23 +14,23 @@ import java.util.stream.Collectors;
 @ToString
 public class MyUserDetails implements UserDetails {
 
-    private Long id;
+    private int id;
     private String name;
     private String pwd;
     private String phone;
 
-    public MyUserDetails(Long id, String name, String pwd, String phone) {
+    public MyUserDetails(int id, String name, String pwd, String phone) {
         this.id = id;
         this.name = name;
         this.pwd = pwd;
         this.phone = phone;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
