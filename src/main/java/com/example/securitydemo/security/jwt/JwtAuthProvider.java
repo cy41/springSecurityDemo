@@ -41,7 +41,7 @@ public class JwtAuthProvider implements AuthenticationProvider {
         log.debug("uidFromToken {}", uidFromToken);
 
         log.debug("token in redis is {}", redisService.get("jwtCache::jwt_uid_" + headerUid));
-        if (StringUtils.safeToString(uidFromToken).equals(headerUid) && headerToken.equals(redisService.get("jwtCache::jwt_uid_" + headerUid).toString())) {
+        if (StringUtils.safeToString(uidFromToken).equals(headerUid) && headerToken.equals(StringUtils.safeToString(redisService.get("jwtCache::jwt_uid_" + headerUid)))) {
             UserDetails userDetails = userService.queryUserDetailsById(uidFromToken);
             if (userDetails == null) {
                 throw new UsernameNotFoundException("no such user");

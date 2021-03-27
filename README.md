@@ -60,3 +60,37 @@ securityConfig -> authManager
 filter -> authManager
 securityConfig -> filterConfig
 filterConfig -> filter
+
+
+
+# 修改信息
+
+## 修改密码
+
+新密码 与 验证码
+
+pwd/sendPhone 获取验证码
+
+
+
+pwd/setPwd 修改
+
+```json
+request
+{
+	"phone": "121231232",
+	"new_pwd": "adfasdf",
+	"verify_code": "1234"
+}
+
+response
+{
+	"code": 1/-1
+	"message": ""
+}
+```
+
+
+
+# 修改手机号
+

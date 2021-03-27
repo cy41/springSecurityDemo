@@ -1,7 +1,8 @@
 package com.example.securitydemo.security.entitys;
 
 import com.example.securitydemo.mybatis.entitys.Role;
-import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,12 +13,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ToString
+@NoArgsConstructor
+@Data
 public class MyUserDetails implements UserDetails {
 
     private int id;
     private String name;
     private String pwd;
     private String phone;
+    private List<Role> roleList;
+
 
     public MyUserDetails(int id, String name, String pwd, String phone) {
         this.id = id;
@@ -26,68 +31,31 @@ public class MyUserDetails implements UserDetails {
         this.phone = phone;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPwd() {
-        return pwd;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    private List<Role> roleList;
-
-
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roleList.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
     }
-
 
     public String getPassword() {
         return pwd;
     }
 
-
     public String getUsername() {
         return name;
     }
 
-    //账户过期否
+    //账户没有过期
 
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    //用户锁定否
+    //用户没有锁定
 
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    //密码过期否
+    //密码没有过期
 
     public boolean isCredentialsNonExpired() {
         return true;

@@ -1,5 +1,13 @@
 package com.example.securitydemo.redis;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -12,7 +20,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.*;
 
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,7 +51,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         config = config.entryTtl(Duration.ofDays(7))     // 设置缓存的默认过期时间，也是使用Duration设置
                 .disableCachingNullValues()     // 不缓存空值
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer(Object.class)));
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(genericJackson2JsonRedisSerializer()));
 
         // 设置一个初始化的缓存空间set集合
         Set<String> cacheNames =  new HashSet<>();
@@ -68,6 +75,30 @@ public class RedisConfig extends CachingConfigurerSupport {
                 .build();
     }
 
+    @Bean
+    public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer() {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+
+        objectMapper.configure(MapperFeature.USE_ANNOTATIONS, false);
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+        objectMapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false);
+
+        // 此项必须配置，否则会报java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to XXX
+
+        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
+        return genericJackson2JsonRedisSerializer;
+    }
 
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
@@ -77,7 +108,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisTemplate.setKeySerializer(stringSerializer);
         redisTemplate.setHashKeySerializer(stringSerializer);
 
-        RedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
+        RedisSerializer genericJackson2JsonRedisSerializer = genericJackson2JsonRedisSerializer();
         redisTemplate.setValueSerializer(genericJackson2JsonRedisSerializer);
         redisTemplate.setHashValueSerializer(genericJackson2JsonRedisSerializer);
 

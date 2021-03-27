@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -31,7 +32,7 @@ public class AuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
         Writer writer = response.getWriter();
 
         int uid = userService.queryUidByPhone(authentication.getPrincipal().toString());
-        String token = jwtUtils.generateToken(uid, 24 * 60 * 60);
+        String token = jwtUtils.generateToken(uid, DateTime.now().plusWeeks(1).toDate());
 
         Result result = new Result(200, "success", token);
 

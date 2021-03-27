@@ -17,14 +17,18 @@ public class JwtUtils {
      * create token
      *
      * @param uid user id
-     * @param expireMinutes 有效时间
+     * @param expireDate 有效时间
      * @return token
      */
     @CachePut(value = "jwtCache", key = "'jwt_uid_' + #uid")
-    public String generateToken(int uid, int expireMinutes) {
+    public String generateToken(int uid, Date expireDate) {
+        System.out.println("now " + DateTime.now());
         return Jwts.builder()
                 .claim(UID, uid)
-                .setExpiration(DateTime.now().plusMillis(expireMinutes).toDate())
+                .setHeaderParam("typ", "JWT")
+                .setHeaderParam("alg", "HS256")
+                .setIssuedAt(DateTime.now().toDate())
+                .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
 
@@ -76,6 +80,7 @@ public class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return null;
         }
         System.out.println("claims " + claims);
