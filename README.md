@@ -26,13 +26,13 @@ request:
 }
 response:
 {
-  "code": 1
-  "message": "success"
+  "code": 1,
+  "message": "success",
   "token": "asdfasdfwerwerwe3094"
 }
 
 {
-  "code": -1
+  "code": -1,
   "message": "fail"
 }
 ```
@@ -49,8 +49,8 @@ request:
 
 response:
 {
-  "code": 1
-  "message": "success"
+  "code": 1,
+  "message": "success",
   "verify_code": 1234
 }
 
@@ -85,7 +85,7 @@ request
 
 response
 {
-	"code": 1/-1
+	"code": 1/-1,
 	"message": ""
 }
 ```
