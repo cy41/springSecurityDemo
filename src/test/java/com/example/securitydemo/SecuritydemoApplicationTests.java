@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.Random;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
@@ -25,4 +26,16 @@ class SecuritydemoApplicationTests {
         log.debug(passwordEncoder.encode("123"));
     }
 
+    @Test
+    void testRandom() {
+        Random random = new Random();
+
+        for (int i = 0; i < 10; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < 4; j++) {
+                sb.append(random.nextInt(10));
+            }
+            System.out.println(sb);
+        }
+    }
 }

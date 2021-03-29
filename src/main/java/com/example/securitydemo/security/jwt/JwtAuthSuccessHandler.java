@@ -11,14 +11,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Component
-public class TokenAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class JwtAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     //todo success progress
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        PrintWriter out = response.getWriter();
+        System.out.println("success handler start");
+        /*PrintWriter out = response.getWriter();
         out.write("success");
         out.flush();
-        out.close();
+        out.close();*/
+        System.out.println(request.getRequestURI());
     }
 }

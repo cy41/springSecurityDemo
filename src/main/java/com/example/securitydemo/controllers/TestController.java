@@ -17,6 +17,8 @@ public class TestController {
 
     @RequestMapping("/jwt/auth")
     public String testJwtAuth() {
+        System.out.println("jwt/auth controller start");
+
         return "hello jwt";
     }
 
