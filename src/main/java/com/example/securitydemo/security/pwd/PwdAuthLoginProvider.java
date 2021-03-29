@@ -1,5 +1,6 @@
 package com.example.securitydemo.security.pwd;
 
+import com.example.securitydemo.security.exception.TokenAuthException;
 import com.example.securitydemo.security.sms.service.UserDetailsByPhoneService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class PwdAuthLoginProvider implements AuthenticationProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(phone);
 
         if (!passwordEncoder.matches(pwd, userDetails.getPassword())) {
-            throw new RuntimeException("password encoder not matchs");
+            throw new TokenAuthException("password encoder not matchs");
         }
 
         return new PwdLoginAuthToken(userDetails.getAuthorities(), phone, pwd);
