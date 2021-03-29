@@ -19,7 +19,7 @@ public class SmsAuthenticationFailureHandler extends SimpleUrlAuthenticationFail
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
-        ResultBean resultBean = new ResultBean(-1, "verify code error");
+        ResultBean resultBean = new ResultBean(-1, exception.getMessage());
         String json = new Gson().toJson(resultBean, ResultBean.class);
         PrintWriter out = response.getWriter();
         out.write(json);

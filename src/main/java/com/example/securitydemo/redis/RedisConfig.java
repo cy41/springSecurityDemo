@@ -26,6 +26,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * jwtCache: 存放jwt信息
+ * userCache：存放userDetails
+ * phoneUid：存放phone uid相关
+ * redisCache：暂时存储user，需删除
+ */
 @EnableCaching
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {

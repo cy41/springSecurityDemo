@@ -34,7 +34,7 @@
         WHERE u.phone = #{phone}
     </select>
 
-    <select id="queryIdByPhone" parameterType="String" resultType="int">
+    <select id="queryIdByPhone" parameterType="String" resultType="Integer">
         SELECT id
         FROM user
         WHERE phone = #{phone}

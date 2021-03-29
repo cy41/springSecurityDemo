@@ -40,7 +40,7 @@ public class MyUserDetails implements UserDetails {
     }
 
     public String getUsername() {
-        return name;
+        return id + "";
     }
 
     //账户没有过期

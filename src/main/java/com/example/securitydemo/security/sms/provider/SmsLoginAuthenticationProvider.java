@@ -1,6 +1,6 @@
 package com.example.securitydemo.security.sms.provider;
 
-import com.example.securitydemo.security.sms.service.SmsLoginUserDetailsService;
+import com.example.securitydemo.security.sms.service.UserDetailsByPhoneService;
 import com.example.securitydemo.security.sms.token.SmsLoginAuthenticationToken;
 import com.example.securitydemo.utils.PhoneSmsService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -25,7 +24,7 @@ public class SmsLoginAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     @Qualifier("smsLoginUserDetailsService")
-    private SmsLoginUserDetailsService userDetailsService;
+    private UserDetailsByPhoneService userDetailsService;
 
     @Autowired
     private PhoneSmsService phoneSmsService;

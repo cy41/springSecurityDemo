@@ -11,7 +11,7 @@ import java.util.Date;
 public class JwtUtils {
 
     private static final String UID = "uid";
-    private static final String key = "cycy1235456";
+    private static final String key = "234985798alfewqrl'[]1fsdf;4";
 
     /**
      * create token

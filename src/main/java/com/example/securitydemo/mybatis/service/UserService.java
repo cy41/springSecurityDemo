@@ -5,6 +5,7 @@ import com.example.securitydemo.mybatis.dao.UserRoleDao;
 import com.example.securitydemo.mybatis.entitys.User;
 import com.example.securitydemo.mybatis.entitys.UserRole;
 import com.example.securitydemo.security.entitys.MyUserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -22,8 +24,9 @@ public class UserService {
     private UserRoleDao userRoleDao = null;
 
 
+    @Cacheable(value = "userCache", key = "'user_id_' + #id", unless = "#result != 'null'")
     @Transactional
-    public UserDetails queryUserDetailsById(String id) {
+    public MyUserDetails queryUserDetailsById(String id) {
         try {
             int uId = Integer.parseInt(id);
             return userDao.queryUserDetailsById(uId);
@@ -32,13 +35,18 @@ public class UserService {
         }
     }
 
-    @Cacheable(value = "userCache", key = "'user_id_' + #id")
+    @Cacheable(value = "userCache", key = "'user_id_' + #id", unless = "#result != 'null'")
     @Transactional
     public MyUserDetails queryUserDetailsById(int id) {
         return userDao.queryUserDetailsById(id);
     }
 
 
+    /**
+     * 注册user，同时注册userRole角色为普通
+     * @param user
+     * @return
+     */
     @Transactional
     @CachePut(value = "redisCache", key = "'user_' + #result.id")
     public User insertUser(User user) {
@@ -47,10 +55,18 @@ public class UserService {
         return user;
     }
 
-
+    /**
+     * 1。redis
+     * 2。sql查询，没有则为注册转3
+     * 3。注册
+     * @param phone
+     * @return userDetails
+     */
     @Transactional
-    public UserDetails queryUserDetailsByPhone(String phone) {
-        UserDetails userDetails = userDao.queryUserDetailsByPhone(phone);
+    @Cacheable(value = "userCache", key = "'phone_' + #phone")
+    public MyUserDetails queryUserDetailsByPhone(String phone) {
+        MyUserDetails userDetails = userDao.queryUserDetailsByPhone(phone);
+        log.debug("userDetails {}", userDetails);
         if (userDetails != null) {
             return userDetails;
         }
@@ -61,8 +77,8 @@ public class UserService {
     }
 
     @Transactional
-    @Cacheable(value = "phoneUid", key = "'user_phone_' + #phone")
-    public int queryUidByPhone(String phone) {
+    @Cacheable(value = "phoneUid", key = "'user_phone_' + #phone", unless = "#result != 'null'")
+    public Integer queryUidByPhone(String phone) {
         return userDao.queryIdByPhone(phone);
     }
 

@@ -17,6 +17,4 @@ public class PasswordUtils {
         return passwordEncoder.encode(pwd);
     }
 
-
-
 }

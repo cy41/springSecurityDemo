@@ -1,9 +1,9 @@
-package com.example.securitydemo.security.pwd.config;
+package com.example.securitydemo.security.pwd;
 
-import com.example.securitydemo.security.pwd.filter.PwdAuthenticationLoginFilter;
-import com.example.securitydemo.security.pwd.handler.PwdLoginAuthFailureHandler;
-import com.example.securitydemo.security.sms.handler.AuthLoginSuccessHandler;
-import com.example.securitydemo.security.sms.service.SmsLoginUserDetailsService;
+import com.example.securitydemo.security.pwd.PwdAuthenticationLoginFilter;
+import com.example.securitydemo.security.pwd.PwdLoginAuthFailureHandler;
+import com.example.securitydemo.security.handler.AuthLoginSuccessHandler;
+import com.example.securitydemo.security.sms.service.UserDetailsByPhoneService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,13 +23,13 @@ public class PwdLoginAuthenticationConfiguration extends SecurityConfigurerAdapt
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private SmsLoginUserDetailsService userDetailsService;
-
-    @Autowired
     private AuthLoginSuccessHandler successHandler;
 
     @Autowired
     private PwdLoginAuthFailureHandler failureHandler;
+
+    @Autowired
+    private UserDetailsByPhoneService userDetailsService;
 
 
     public void configure(HttpSecurity builder) {
@@ -39,7 +39,7 @@ public class PwdLoginAuthenticationConfiguration extends SecurityConfigurerAdapt
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);
 
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        PwdAuthLoginProvider provider = new PwdAuthLoginProvider();
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userDetailsService);
 

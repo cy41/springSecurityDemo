@@ -1,31 +1,34 @@
-package com.example.securitydemo.security.pwd.service;
+package com.example.securitydemo.security.sms.service;
 
 import com.example.securitydemo.mybatis.service.UserService;
-import com.example.securitydemo.security.entitys.MyUserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service("pwdLoginUserDetailsService")
-public class PwdLoginUserDetailsService implements UserDetailsService {
+@Service("smsLoginUserDetailsService")
+@Slf4j
+public class UserDetailsByPhoneService implements UserDetailsService {
 
     @Autowired
     private UserService userService;
 
     /**
      *
-     * @param id 通过uid查找user
-     * @return userDetails
+     * @param phone
+     * @return 根据phone查询用户信息
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        UserDetails userDetails = userService.queryUserDetailsById(id);
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        UserDetails userDetails = userService.queryUserDetailsByPhone(phone);
         if (userDetails == null) {
+            log.debug("no such user");
             throw new UsernameNotFoundException("no such user");
         }
+        log.debug(userDetails.toString());
         return userDetails;
     }
 

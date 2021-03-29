@@ -14,7 +14,7 @@ public interface UserDao {
 
     MyUserDetails queryUserDetailsByPhone(String phone);
 
-    int queryIdByPhone(String phone);
+    Integer queryIdByPhone(String phone);
 
     int insertUser(User user);
 }

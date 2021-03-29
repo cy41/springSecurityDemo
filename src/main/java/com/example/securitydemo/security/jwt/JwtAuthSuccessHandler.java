@@ -22,5 +22,6 @@ public class JwtAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler
         out.flush();
         out.close();*/
         System.out.println(request.getRequestURI());
+        request.setAttribute("uid", authentication.getPrincipal());
     }
 }

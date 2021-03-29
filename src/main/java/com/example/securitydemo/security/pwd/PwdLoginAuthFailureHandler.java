@@ -1,4 +1,4 @@
-package com.example.securitydemo.security.pwd.handler;
+package com.example.securitydemo.security.pwd;
 
 import com.example.securitydemo.security.exception.TokenAuthException;
 import com.google.gson.Gson;
@@ -46,7 +46,9 @@ public class PwdLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHa
         } else if (e instanceof BadCredentialsException) {
             respBean.setMessage("account or pwd error");
         } else if (e instanceof TokenAuthException) {
-            respBean.setMessage("no jwt-token header");
+            respBean.setMessage(e.getMessage());
+        } else {
+            respBean.setMessage(e.getMessage());
         }
         String json = new Gson().toJson(respBean,ExceptionResult.class);
         out.write(json);

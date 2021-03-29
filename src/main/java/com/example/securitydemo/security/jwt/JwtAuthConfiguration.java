@@ -1,6 +1,6 @@
 package com.example.securitydemo.security.jwt;
 
-import com.example.securitydemo.security.pwd.handler.PwdLoginAuthFailureHandler;
+import com.example.securitydemo.security.pwd.PwdLoginAuthFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,16 +19,7 @@ public class JwtAuthConfiguration extends SecurityConfigurerAdapter<DefaultSecur
 
     @Override
     public void configure(HttpSecurity builder) {
-        //provider = new JwtAuthProvider();
-        //postProcess(provider);
-        //JwtAuthHeaderFilter filter = new JwtAuthHeaderFilter();
-        //filter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
-        //filter.setAuthenticationSuccessHandler(successHandler);
-        //filter.setAuthenticationFailureHandler(failureHandler);
-
-
         builder.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-        //builder.authenticationProvider(provider);
 
     }
 }

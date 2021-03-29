@@ -1,4 +1,4 @@
-package com.example.securitydemo.security.pwd.filter;
+package com.example.securitydemo.security.pwd;
 
 import com.example.securitydemo.utils.StringUtils;
 import com.google.gson.JsonObject;
@@ -38,8 +38,9 @@ public class PwdAuthenticationLoginFilter extends AbstractAuthenticationProcessi
             phone = jsonObject.get(PHONE).getAsString().trim();
             pwd = jsonObject.get(PWD).getAsString().trim();
         }
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(phone, pwd);
-        log.debug("token is " + token.toString());
+        log.debug("phone {}, pwd {}", phone, pwd);
+        PwdLoginAuthToken token = new PwdLoginAuthToken(phone, pwd);
+        log.debug("token is {}", token);
         return getAuthenticationManager().authenticate(token);
     }
 }

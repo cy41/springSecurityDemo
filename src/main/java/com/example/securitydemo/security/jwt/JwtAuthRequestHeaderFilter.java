@@ -2,7 +2,7 @@ package com.example.securitydemo.security.jwt;
 
 import com.example.securitydemo.mybatis.service.UserService;
 import com.example.securitydemo.security.exception.TokenAuthException;
-import com.example.securitydemo.security.pwd.handler.PwdLoginAuthFailureHandler;
+import com.example.securitydemo.security.pwd.PwdLoginAuthFailureHandler;
 import com.example.securitydemo.utils.JwtUtils;
 import com.example.securitydemo.utils.RedisService;
 import com.example.securitydemo.utils.StringUtils;
@@ -56,6 +56,7 @@ public class JwtAuthRequestHeaderFilter extends OncePerRequestFilter {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             log.info("authentication not null, filter continue");
             filterChain.doFilter(request, response);
+            return ;
         }
         if (!jwtHeaderMatcher.matches(request)) {
             log.debug("no jwt header");
@@ -72,13 +73,13 @@ public class JwtAuthRequestHeaderFilter extends OncePerRequestFilter {
 
         String headerUid = StringUtils.safeToString(json.get(UID).getAsString());
 
-        int uidFromToken = jwtUtils.parseUidFromToken(headerToken);
+        String uidFromToken = StringUtils.safeToString(jwtUtils.parseUidFromToken(headerToken));
 
         String redisToken = StringUtils.safeToString(redisService.get("jwtCache::jwt_uid_" + headerUid));
 
         log.debug("headerUid {}, headerToken {}, uidFromToken {}, redisToken {}", headerUid, headerToken, uidFromToken, redisToken);
 
-        if (StringUtils.safeToString(uidFromToken).equals(headerUid) && headerToken.equals(redisToken)) {
+        if (uidFromToken.equals(headerUid) && headerToken.equals(redisToken)) {
             UserDetails userDetails = userService.queryUserDetailsById(uidFromToken);
             if (userDetails == null) {
                 failureHandler.onAuthenticationFailure(request, response, new UsernameNotFoundException("no such user"));
