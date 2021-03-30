@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/tuchong
     username: root
-    password: cy1999315acd
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   jackson:
     serialization:
@@ -24,11 +24,6 @@ spring:
   cache:
     type: redis
     cache-names: redisCache, phoneUid, jwtCache, userCache
-
-  security:
-    user:
-      name: cy41
-      password: 123456
 
   application:
     name: login-server
