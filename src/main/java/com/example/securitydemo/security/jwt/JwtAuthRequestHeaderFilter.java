@@ -6,8 +6,6 @@ import com.example.securitydemo.security.pwd.PwdLoginAuthFailureHandler;
 import com.example.securitydemo.utils.JwtUtils;
 import com.example.securitydemo.utils.RedisService;
 import com.example.securitydemo.utils.StringUtils;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -69,23 +67,19 @@ public class JwtAuthRequestHeaderFilter extends OncePerRequestFilter {
 
         log.info("body {}", body);
 
-        JsonObject json = new JsonParser().parse(body).getAsJsonObject();
-
-        String headerUid = StringUtils.safeToString(json.get(UID).getAsString());
-
         String uidFromToken = StringUtils.safeToString(jwtUtils.parseUidFromToken(headerToken));
 
-        String redisToken = StringUtils.safeToString(redisService.get("jwtCache::jwt_uid_" + headerUid));
+        String redisToken = StringUtils.safeToString(redisService.get("jwtCache::jwt_uid_" + uidFromToken));
 
-        log.debug("headerUid {}, headerToken {}, uidFromToken {}, redisToken {}", headerUid, headerToken, uidFromToken, redisToken);
+        log.debug("headerToken {}, uidFromToken {}, redisToken {}", headerToken, uidFromToken, redisToken);
 
-        if (uidFromToken.equals(headerUid) && headerToken.equals(redisToken)) {
+        if (headerToken.equals(redisToken)) {
             UserDetails userDetails = userService.queryUserDetailsById(uidFromToken);
             if (userDetails == null) {
                 failureHandler.onAuthenticationFailure(request, response, new UsernameNotFoundException("no such user"));
             }
 
-            Authentication authentication = new JwtAuthToken(userDetails.getAuthorities(), headerUid, headerToken);
+            Authentication authentication = new JwtAuthToken(userDetails.getAuthorities(), uidFromToken, headerToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             successHandler.onAuthenticationSuccess(request, response, authentication);
 
