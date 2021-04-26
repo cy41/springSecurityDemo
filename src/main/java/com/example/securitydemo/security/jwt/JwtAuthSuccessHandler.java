@@ -17,10 +17,7 @@ public class JwtAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         System.out.println("success handler start");
-        /*PrintWriter out = response.getWriter();
-        out.write("success");
-        out.flush();
-        out.close();*/
+
         System.out.println(request.getRequestURI());
         request.setAttribute("uid", authentication.getPrincipal());
     }

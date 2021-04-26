@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.example.securitydemo.CommonConsts.JWT_TOKEN_HEADER;
-import static com.example.securitydemo.CommonConsts.UID;
 
 @Slf4j
 @Component

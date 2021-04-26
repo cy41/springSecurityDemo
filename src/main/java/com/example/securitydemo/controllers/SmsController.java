@@ -3,6 +3,8 @@ package com.example.securitydemo.controllers;
 import com.example.securitydemo.utils.PhoneSmsService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,11 +25,23 @@ public class SmsController {
     private PhoneSmsService phoneSmsService;
 
     @RequestMapping("/sendPhone")
-    public String sendPhone(HttpServletRequest request) throws IOException {
+    public SmsResponse sendPhone(HttpServletRequest request) throws IOException {
         String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
         JsonObject jsonObject = new JsonParser().parse(body).getAsJsonObject();
         String phone = jsonObject.get(PHONE).getAsString();
 
-        return phoneSmsService.setVerifyCode(phone);
+        return SmsResponse.success(phoneSmsService.setVerifyCode(phone));
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class SmsResponse {
+        private Integer code;
+        private String message;
+        private String verifyCode;
+
+        public static SmsResponse success(String verifyCode) {
+            return new SmsResponse(200, "success", verifyCode);
+        }
     }
 }

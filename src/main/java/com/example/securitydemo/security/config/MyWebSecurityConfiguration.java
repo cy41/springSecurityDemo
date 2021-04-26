@@ -50,7 +50,7 @@ public class MyWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // 设置URL的授权
                 .authorizeRequests()
                 // 这里需要将登录页面放行
-                .antMatchers("/failure", "/insertUser", "/testPwd").permitAll()
+                .antMatchers("/failure", "/insertUser").permitAll()
                 .antMatchers("/pwd/*").permitAll()
                 .antMatchers("/sms/*").permitAll()
                 // anyRequest() 所有请求   authenticated() 必须被认证
