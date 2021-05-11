@@ -34,7 +34,7 @@ public class PwdLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHa
         log.error("用户登录失败, {}",e.getMessage());
         PrintWriter out = response.getWriter();
         ExceptionResult respBean = new ExceptionResult(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.OK.value());
         if (e instanceof LockedException) {
             respBean.setMessage("account locked");
         } else if (e instanceof CredentialsExpiredException) {

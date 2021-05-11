@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 public class SmsAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.OK.value());
 
         ResultBean resultBean = new ResultBean(-1, exception.getMessage());
         String json = new Gson().toJson(resultBean, ResultBean.class);
