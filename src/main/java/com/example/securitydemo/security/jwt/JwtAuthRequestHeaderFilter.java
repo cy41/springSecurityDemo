@@ -62,9 +62,6 @@ public class JwtAuthRequestHeaderFilter extends OncePerRequestFilter {
         }
 
         String headerToken = request.getHeader(JWT_TOKEN_HEADER);
-        String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
-
-        log.info("body {}", body);
 
         String uidFromToken = StringUtils.safeToString(jwtUtils.parseUidFromToken(headerToken));
 
@@ -83,7 +80,7 @@ public class JwtAuthRequestHeaderFilter extends OncePerRequestFilter {
             successHandler.onAuthenticationSuccess(request, response, authentication);
 
         } else {
-            failureHandler.onAuthenticationFailure(request, response, new TokenAuthException("uid not equals token"));
+            failureHandler.onAuthenticationFailure(request, response, new TokenAuthException("token auth error"));
         }
         filterChain.doFilter(request, response);
     }

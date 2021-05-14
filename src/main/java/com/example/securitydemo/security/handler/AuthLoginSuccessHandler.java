@@ -1,8 +1,7 @@
 package com.example.securitydemo.security.handler;
 
 import com.example.securitydemo.mybatis.service.UserService;
-import com.example.securitydemo.security.ResultBean;
-import com.example.securitydemo.security.sms.token.SmsLoginAuthenticationToken;
+import com.example.securitydemo.network.BaseResponseData;
 import com.example.securitydemo.utils.JwtUtils;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
@@ -11,12 +10,10 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -48,9 +45,9 @@ public class AuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
         int uid = userService.queryUidByPhone(phone);
         String token = jwtUtils.generateToken(uid, DateTime.now().plusWeeks(1).toDate());
 
-        Result result = new Result(200, "success", token);
+        BaseResponseData result = Result.success(token);
 
-        String json = new Gson().toJson(result, Result.class);
+        String json = new Gson().toJson(result, BaseResponseData.class);
         writer.write(json);
         writer.flush();
         writer.close();
@@ -59,9 +56,12 @@ public class AuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    private class Result {
-        private int code;
-        private String message;
+    private static class Result {
+
         private String token;
+
+        public static BaseResponseData success(String token) {
+            return BaseResponseData.success(new Result(token));
+        }
     }
 }

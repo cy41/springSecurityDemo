@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ResultBean {
     private int code;
     private String message;
+    private Object data;
 }

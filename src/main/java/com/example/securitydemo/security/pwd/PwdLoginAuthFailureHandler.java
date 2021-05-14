@@ -26,6 +26,7 @@ public class PwdLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHa
     private static class ExceptionResult {
         private int code;
         private String message;
+        private Object data;
     }
 
 
@@ -33,7 +34,7 @@ public class PwdLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHa
         response.setContentType("application/json;charset=utf-8");
         log.error("用户登录失败, {}",e.getMessage());
         PrintWriter out = response.getWriter();
-        ExceptionResult respBean = new ExceptionResult(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        ExceptionResult respBean = new ExceptionResult(HttpStatus.UNAUTHORIZED.value(), e.getMessage(), "");
         response.setStatus(HttpStatus.OK.value());
         if (e instanceof LockedException) {
             respBean.setMessage("account locked");
@@ -46,10 +47,13 @@ public class PwdLoginAuthFailureHandler extends SimpleUrlAuthenticationFailureHa
         } else if (e instanceof BadCredentialsException) {
             respBean.setMessage("account or pwd error");
         } else if (e instanceof TokenAuthException) {
+            //token auth error;token与redis中不一致，强制退登
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             respBean.setMessage(e.getMessage());
         } else {
             respBean.setMessage(e.getMessage());
         }
+
         String json = new Gson().toJson(respBean,ExceptionResult.class);
         out.write(json);
         out.flush();
