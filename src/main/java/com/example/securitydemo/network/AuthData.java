@@ -13,4 +13,8 @@ public class AuthData {
     public static BaseResponseData success(String uid) {
         return BaseResponseData.success(new AuthData(uid));
     }
+
+    public static BaseResponseData failed() {
+        return BaseResponseData.failed("");
+    }
 }
