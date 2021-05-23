@@ -40,7 +40,7 @@ public class JwtAuthController {
 
         log.debug("token {}, uidFromToken {}, redisToken {}", token, uidFromToken, redisToken);
 
-        if (token.equals(redisToken) && StringUtils.isNullOrEmpty(redisToken)) {
+        if (token.equals(redisToken) && StringUtils.hasText(redisToken)) {
             return AuthData.success(uidFromToken);
         } else {
             return AuthData.failed();
