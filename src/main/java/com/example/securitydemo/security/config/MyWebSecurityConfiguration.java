@@ -53,7 +53,7 @@ public class MyWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/failure", "/insertUser").permitAll()
                 .antMatchers("/pwd/*").permitAll()
                 .antMatchers("/sms/*").permitAll()
-                .antMatchers("/jwt/token").permitAll()
+                .antMatchers("/jwt/token", "/logout/").permitAll()
                 // anyRequest() 所有请求   authenticated() 必须被认证
                 .anyRequest().authenticated()
                 .and()

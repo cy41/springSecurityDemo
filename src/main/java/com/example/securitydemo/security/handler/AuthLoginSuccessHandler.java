@@ -45,7 +45,7 @@ public class AuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
         int uid = userService.queryUidByPhone(phone);
         String token = jwtUtils.generateToken(uid, DateTime.now().plusWeeks(1).toDate());
 
-        BaseResponseData result = Result.success(token);
+        BaseResponseData result = Result.success(token, String.valueOf(uid));
 
         String json = new Gson().toJson(result, BaseResponseData.class);
         writer.write(json);
@@ -59,9 +59,10 @@ public class AuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
     private static class Result {
 
         private String token;
+        private String uid;
 
-        public static BaseResponseData success(String token) {
-            return BaseResponseData.success(new Result(token));
+        public static BaseResponseData success(String token, String uid) {
+            return BaseResponseData.success(new Result(token, uid));
         }
     }
 }
