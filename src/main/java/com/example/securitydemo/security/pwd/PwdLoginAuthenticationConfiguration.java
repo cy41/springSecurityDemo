@@ -33,7 +33,7 @@ public class PwdLoginAuthenticationConfiguration extends SecurityConfigurerAdapt
 
 
     public void configure(HttpSecurity builder) {
-        log.debug("start config");
+        log.info("start config");
         PwdAuthenticationLoginFilter filter = new PwdAuthenticationLoginFilter();
         filter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
         filter.setAuthenticationSuccessHandler(successHandler);

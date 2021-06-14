@@ -38,7 +38,7 @@ public class JwtAuthController {
 
         String redisToken = StringUtils.safeToString(redisService.get("jwtCache::jwt_uid_" + uidFromToken));
 
-        log.debug("token {}, uidFromToken {}, redisToken {}", token, uidFromToken, redisToken);
+        log.info("token {}, uidFromToken {}, redisToken {}", token, uidFromToken, redisToken);
 
         if (token.equals(redisToken) && StringUtils.hasText(redisToken)) {
             return AuthData.success(uidFromToken);

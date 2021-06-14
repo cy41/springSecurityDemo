@@ -66,7 +66,7 @@ public class UserService {
     @Cacheable(value = "userCache", key = "'phone_' + #phone")
     public MyUserDetails queryUserDetailsByPhone(String phone) {
         MyUserDetails userDetails = userDao.queryUserDetailsByPhone(phone);
-        log.debug("userDetails {}", userDetails);
+        log.info("userDetails {}", userDetails);
         if (userDetails != null) {
             return userDetails;
         }

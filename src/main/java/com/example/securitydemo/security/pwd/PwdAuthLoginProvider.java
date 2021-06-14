@@ -5,6 +5,7 @@ import com.example.securitydemo.security.sms.service.UserDetailsByPhoneService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,13 +34,13 @@ public class PwdAuthLoginProvider implements AuthenticationProvider {
         String phone = pwdLoginAuthToken.getPrincipal().toString();
         String pwd = pwdLoginAuthToken.getCredentials().toString();
 
-        log.debug("phone {}, pwd {}", phone, pwd);
+        log.info("phone {}, pwd {}", phone, pwd);
 
         // 找不到就直接throw UsernameNotFoundException了
         UserDetails userDetails = userDetailsService.loadUserByUsername(phone);
 
         if (!passwordEncoder.matches(pwd, userDetails.getPassword())) {
-            throw new TokenAuthException("password encoder not matchs");
+            throw new BadCredentialsException("password encoder not matchs");
         }
 
         return new PwdLoginAuthToken(userDetails.getAuthorities(), phone, pwd);
@@ -48,7 +49,7 @@ public class PwdAuthLoginProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        log.debug("supports {}", authentication.isAssignableFrom(PwdLoginAuthToken.class));
+        log.info("supports {}", authentication.isAssignableFrom(PwdLoginAuthToken.class));
         return authentication.isAssignableFrom(PwdLoginAuthToken.class);
     }
 }

@@ -28,7 +28,7 @@ public class PhoneSmsService {
 
     public boolean verifyCode(String phone, String code) {
         String verifyCode = getVerifyCode(phone);
-        log.debug("verifyCode is {}", verifyCode);
+        log.info("verifyCode is {}", verifyCode);
         if (verifyCode == null) return false;
         return verifyCode.equals(code);
     }
@@ -42,7 +42,7 @@ public class PhoneSmsService {
         String code = randomCode();
         service.set(SUFFIX + phone, code, EXPIRED_TIME);
         String res = smsTemplate.sendPhone(phone, code);
-        log.debug("tx sms res {}", res);
+        log.info("tx sms res {}", res);
         return code;
     }
 

@@ -26,4 +26,4 @@ spring:
 
 logging:
   level:
-    com.example.securitydemo: debug
+    com.example.securitydemo: info

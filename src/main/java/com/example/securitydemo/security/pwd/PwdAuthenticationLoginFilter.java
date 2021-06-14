@@ -28,7 +28,7 @@ public class PwdAuthenticationLoginFilter extends AbstractAuthenticationProcessi
 
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        log.debug("attempt start");
+        log.info("attempt start");
         String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
         log.info("body {}", body);
         String phone = "";
@@ -38,9 +38,9 @@ public class PwdAuthenticationLoginFilter extends AbstractAuthenticationProcessi
             phone = jsonObject.get(PHONE).getAsString().trim();
             pwd = jsonObject.get(PWD).getAsString().trim();
         }
-        log.debug("phone {}, pwd {}", phone, pwd);
+        log.info("phone {}, pwd {}", phone, pwd);
         PwdLoginAuthToken token = new PwdLoginAuthToken(phone, pwd);
-        log.debug("token is {}", token);
+        log.info("token is {}", token);
         return getAuthenticationManager().authenticate(token);
     }
 }

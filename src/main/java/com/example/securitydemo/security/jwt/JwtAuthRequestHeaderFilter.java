@@ -54,7 +54,7 @@ public class JwtAuthRequestHeaderFilter extends OncePerRequestFilter {
             return ;
         }
         if (!jwtHeaderMatcher.matches(request)) {
-            log.debug("no jwt header");
+            log.info("no jwt header");
             filterChain.doFilter(request, response);
             return ;
         }
@@ -65,7 +65,7 @@ public class JwtAuthRequestHeaderFilter extends OncePerRequestFilter {
 
         String redisToken = StringUtils.safeToString(redisService.get("jwtCache::jwt_uid_" + uidFromToken));
 
-        log.debug("headerToken {}, uidFromToken {}, redisToken {}", headerToken, uidFromToken, redisToken);
+        log.info("headerToken {}, uidFromToken {}, redisToken {}", headerToken, uidFromToken, redisToken);
 
         if (headerToken.equals(redisToken)) {
             UserDetails userDetails = userService.queryUserDetailsById(uidFromToken);

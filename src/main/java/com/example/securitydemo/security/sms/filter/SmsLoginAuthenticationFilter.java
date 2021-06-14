@@ -30,7 +30,7 @@ public class SmsLoginAuthenticationFilter extends AbstractAuthenticationProcessi
 
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        log.debug("attempt start");
+        log.info("attempt start");
         String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
         log.info("body {}", body);
         String phone = "";
@@ -42,7 +42,7 @@ public class SmsLoginAuthenticationFilter extends AbstractAuthenticationProcessi
             verifyCode = jsonObject.get(VERIFY_CODE).getAsString();
         }
 
-        log.debug("user phone=" + phone + " verifyCode="+verifyCode);
+        log.info("user phone=" + phone + " verifyCode="+verifyCode);
         SmsLoginAuthenticationToken token = new SmsLoginAuthenticationToken(phone, verifyCode);
         setDetails(request, token);
         return getAuthenticationManager().authenticate(token);

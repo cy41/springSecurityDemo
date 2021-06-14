@@ -79,7 +79,7 @@ public class SmsTemplate
             //log.debug("res {}", resJson);
 
             // 可以取出单个值，您可以通过官网接口文档或跳转到 response 对象的定义处查看返回字段的定义
-            log.debug("resId {}", res.getRequestId());
+            log.info("resId {}", res.getRequestId());
 
             return resJson;
         } catch (TencentCloudSDKException e) {

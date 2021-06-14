@@ -23,7 +23,7 @@ class SecuritydemoApplicationTests {
     void testPasswordEncoder() {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        log.debug(passwordEncoder.encode("123"));
+        log.info("pwd {}", passwordEncoder.encode("123456"));
     }
 
     @Test

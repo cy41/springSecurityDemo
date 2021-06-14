@@ -25,10 +25,10 @@ public class UserDetailsByPhoneService implements UserDetailsService {
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
         UserDetails userDetails = userService.queryUserDetailsByPhone(phone);
         if (userDetails == null) {
-            log.debug("no such user");
+            log.info("no such user");
             throw new UsernameNotFoundException("no such user");
         }
-        log.debug(userDetails.toString());
+        log.info(userDetails.toString());
         return userDetails;
     }
 

@@ -41,7 +41,7 @@ public class AuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
         Writer writer = response.getWriter();
 
         String phone = authentication.getPrincipal().toString();
-        log.debug("success handle start {}", phone);
+        log.info("success handle start {}", phone);
         int uid = userService.queryUidByPhone(phone);
         String token = jwtUtils.generateToken(uid, DateTime.now().plusWeeks(1).toDate());
 
